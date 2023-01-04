@@ -96,6 +96,11 @@ class Filament_sensor_simplifiedPlugin(octoprint.plugin.StartupPlugin,
         gpio_mode_disabled = self.gpio_mode_disabled
         return flask.jsonify(gpio_mode_disabled=gpio_mode_disabled, printing=self.printing)
 
+    @octoprint.plugin.BlueprintPlugin.route("/disable", methods=["GET"])
+    def get_status(self):
+        filamentPresentInt = self.is_filament_present(self.setting_pin, self.setting_power, self.setting_triggered)
+        return flask.jsonify(status=filamentPresentInt)
+
     # test pin value, power pin or if its used by someone else
     def on_api_command(self, command, data):
         try:
